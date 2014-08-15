@@ -7,8 +7,8 @@ def get_server(environment=None):
     return data
   return None
 
-def get_user(foo=None):
+def get_user(name=None):
   if foo:
-    data = {"status":"okay", "foo": str(foo)}
+    data = {"status":"okay", "name": str(foo)}
     return data
   return None
