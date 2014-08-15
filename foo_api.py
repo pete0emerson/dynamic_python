@@ -3,13 +3,30 @@
 import foo_library
 import inspect
 import sys
+from functools import wraps
 from flask import Flask, request
 import json
 
 app = Flask(__name__)
 
+def authorized(f):
+  @wraps(f)
+  def decorated_function(*args, **kwargs):
+    data = request.get_json(force=True)
+    if 'token' in data:
+      if data['token'] == 'abc':
+        return f(*args, **kwargs)
+    return '{"status":"error", "message":"Not authorized"}'
+  return decorated_function
+
+
+@app.route('/auth', methods=['GET'])
+def auth():
+  return 'okay'
+
 @app.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
 @app.route('/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@authorized
 def catch_all(path):
   method = request.method.lower()
   function_name = method + '_' + path
