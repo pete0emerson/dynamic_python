@@ -5,12 +5,14 @@ import json
 
 class Foo_Client:
 
-  def __init__(self, hostname='localhost', port=5000):
+  def __init__(self, config='./foo_client.json', hostname='localhost', port=5000):
     self.hostname = hostname
     self.port = port
     self.url = 'http://' + self.hostname + ':' + str(self.port)
-    # This really should come from a file. Perhaps an auto-generated one.
-    self.data = { 'server' : ['get'], 'user' : ['get']}
+    # This needs better error handling
+    with open(config, 'r') as f:
+      text = f.read()
+    self.data=json.loads(text)
 
     for endpoint in self.data:
       for method in self.data[endpoint]:
