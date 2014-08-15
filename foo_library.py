@@ -9,6 +9,6 @@ def get_server(environment=None):
 
 def get_user(name=None):
   if name:
-    data = {"status":"okay", "name": str(foo)}
+    data = {"status":"okay", "name": str(name)}
     return data
   return None
